@@ -19,3 +19,5 @@ fast-outputs*
 *.pth.back
 *.zip
 */.DS_Store
+*.nfs0000*
+*/*.nfs0000*
