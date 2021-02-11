@@ -72,10 +72,8 @@ download_vgg_flower(){
 
 # traffic_sign
 download_traffic_sign(){
-  mkdir -p GTSRB
-  cd GTSRB
   wget https://sid.erda.dk/public/archives/daaeac0d7ce1152aea9b61d9f1e19370/GTSRB_Final_Training_Images.zip
-  cd ..
+  unzip GTSRB_Final_Training_Images.zip
 }
 
 # mscoco
@@ -87,5 +85,3 @@ download_mscoco(){
   unzip train2017.zip
   unzip annotations_trainval2017.zip
 }
-
-download_mscoco
