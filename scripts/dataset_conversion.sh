@@ -17,6 +17,7 @@ meta_dataset_dir="${scriptpath}/../meta-dataset"
 echo "meta dataset: ${meta_dataset_dir}"
 
 cd ${meta_dataset_dir}
+echo "LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
 
 # ImageNet
 ilsvrc_2012(){
@@ -37,12 +38,12 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 }
 
 # [3] aircraft
-download_aircraft(){
-  mkdir -p fgvc-aircraft-2013b
-  cd fgvc-aircraft-2013b
-  wget http://www.robots.ox.ac.uk/~vgg/data/fgvc-aircraft/archives/fgvc-aircraft-2013b.tar.gz
-  tar xzvf fgvc-aircraft-2013b.tar.gz
-  cd ..
+do_aircraft(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=aircraft \
+  --omniglot_data_root=${root_dir}/fgvc-aircraft-2013b \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [4] cu_birds
@@ -105,4 +106,6 @@ download_mscoco(){
   unzip annotations_trainval2017.zip
 }
 
+# Convert the dataset into records
 do_omniglot
+do_aircraft

@@ -26,7 +26,7 @@ The following is required by meta-dataset:
 
     Follow the the "User instructions" in the [Meta-Dataset repository](https://github.com/google-research/meta-dataset#user-instructions) for "Installation" and "Downloading and converting datasets".
 
-    For simplicity, we also provided two scripts to download and convert the datasets, i.e., `bash scripts/download.sh` and `scripts/dataset_conversion.sh`.
+    For simplicity, we also provided two scripts to download and convert the datasets, i.e., `bash scripts/download.sh` and `bash scripts/dataset_conversion.sh`.
 
 2. Additional Test Datasets:
 
