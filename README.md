@@ -1,8 +1,16 @@
 # [ICLR 2021] A Universal Representation Transformer Layer for Few-Shot Image Classification
 
 
-## Dependencies
-This code requires the following:
+
+## Install
+
+Please use this command to download this repo:
+```
+git clone --recurse-submodules git@github.com:D-X-Y/URT.git
+```
+
+### Dependencies
+This repo requires the following:
 * Python 3.6 or greater
 * PyTorch 1.0 or greater
 * TensorFlow 1.14 or greater
@@ -34,3 +42,16 @@ Or you can extract by your own via ```bash ./scripts/pre-extract-feature.sh resn
 
 ### Train and evaluate
 run command from the dir of this repo: ```bash ./fast-scripts/urt-avg-head.sh ${log_dir} ${num_head} ${penalty_coef} ${cache_dir}```, where the ${num_head}=2 and ${penalty_coef}=0.1 in our paper.
+
+
+## Citation
+
+If you find that this project helps your research, please consider citing our work.
+```
+@inproceedings{liu2020universal,
+	title={A Universal Representation Transformer Layer for Few-Shot Image Classification},
+	author={Liu, Lu and Hamilton, William and Long, Guodong and Jiang, Jing and Larochelle, Hugo},
+	booktitle={International Conference on Learning Representations (ICLR)},
+	year={2021}
+}
+```

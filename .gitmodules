@@ -1,0 +1,3 @@
+[submodule "meta-dataset"]
+	path = meta-dataset
+	url = git@github.com:google-research/meta-dataset.git
