@@ -1,6 +1,6 @@
 # [ICLR 2021] A Universal Representation Transformer Layer for Few-Shot Image Classification
 
-
+Few-shot classification aims to recognize unseen classes when presented with only a small number of samples. We consider the problem of multi-domain few-shot image classification, where unseen classes and examples come from diverse data sources. This problem has seen growing interest and has inspired the development of benchmarks such as Meta-Dataset. A key challenge in this multi-domain setting is to effectively integrate the feature representations from the diverse set of training domains. Here, we propose a Universal Representation Transformer (URT) layer, that meta-learns to leverage universal features for few-shot classification by dynamically re-weighting and composing the most appropriate domain-specific representations. In experiments, we show that URT sets a new state-of-the-art result on Meta-Dataset. Specifically, it achieves top-performance on the highest number of data sources compared to competing methods. We analyze variants of URT and present a visualization of the attention score heatmaps that sheds light on how the model performs cross-domain generalization.
 
 ## Install
 
@@ -15,11 +15,18 @@ This repo requires the following:
 * PyTorch 1.0 or greater
 * TensorFlow 1.14 or greater
 
+The following is required by meta-dataset:
+* pip install absl-py
+* pip install gin-config>=0.1.2
+* pip install tensorflow-gpu
+
 
 ## Data Preparation 
 1. Meta-Dataset:
 
     Follow the the "User instructions" in the [Meta-Dataset repository](https://github.com/google-research/meta-dataset#user-instructions) for "Installation" and "Downloading and converting datasets".
+
+    For simplicity, we also provided two scripts to download and convert the datasets, i.e., `bash scripts/download.sh` and `scripts/dataset_conversion.sh`.
 
 2. Additional Test Datasets:
 

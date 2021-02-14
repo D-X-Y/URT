@@ -2,9 +2,21 @@
 # Follow the instructions from https://github.com/google-research/meta-dataset/blob/main/doc/dataset_conversion.md
 # The version is committe: https://github.com/google-research/meta-dataset/commit/47671076304ef5fb6b7406b16bc2737bac6baded
 
-root_dir="/projects/NeuralArch/meta-dataset"
+which python
+python --version
 
-cd ${root_dir}
+root_dir="/projects/NeuralArch/meta-dataset"
+tf_root_dir="/projects/NeuralArch/meta-dataset-tf"
+echo "Original data: ${root_dir}"
+mkdir -p ${tf_root_dir}
+
+script=$(readlink -f "$0")
+scriptpath=$(dirname "$script")
+echo $scriptpath
+meta_dataset_dir="${scriptpath}/../meta-dataset"
+echo "meta dataset: ${meta_dataset_dir}"
+
+cd ${meta_dataset_dir}
 
 # ImageNet
 ilsvrc_2012(){
@@ -16,14 +28,12 @@ ilsvrc_2012(){
 }
 
 # [2] omniglot
-download_omniglot(){
-  mkdir -p omniglot
-  cd omniglot
-  wget https://github.com/brendenlake/omniglot/raw/master/python/images_background.zip
-  wget https://github.com/brendenlake/omniglot/raw/master/python/images_evaluation.zip
-  unzip images_background.zip
-  unzip images_evaluation.zip
-  cd ..
+do_omniglot(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=omniglot \
+  --omniglot_data_root=${root_dir}/omniglot \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [3] aircraft
@@ -95,14 +105,4 @@ download_mscoco(){
   unzip annotations_trainval2017.zip
 }
 
-# start download
-download_omniglot
-download_aircraft
-download_cu_birds
-download_dtd
-download_quickdraw
-download_fungi
-download_vgg_flower
-download_traffic_sign
-download_mscoco
-
+do_omniglot
