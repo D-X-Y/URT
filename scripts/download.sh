@@ -28,29 +28,21 @@ download_omniglot(){
 
 # [3] aircraft
 download_aircraft(){
-  mkdir -p fgvc-aircraft-2013b
-  cd fgvc-aircraft-2013b
   wget http://www.robots.ox.ac.uk/~vgg/data/fgvc-aircraft/archives/fgvc-aircraft-2013b.tar.gz
   tar xzvf fgvc-aircraft-2013b.tar.gz
-  cd ..
 }
 
 # [4] cu_birds
 download_cu_birds(){
-  mkdir -p CUB_200_2011
-  cd CUB_200_2011
-  wget http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/CUB_200_2011.tgz
+  # wget http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/CUB_200_2011.tgz
+  gdown https://drive.google.com/u/0/uc?id=1hbzc_P1FuxMkcabkgn9ZKinBwW683j45
   tar xzvf CUB_200_2011.tgz
-  cd ..
 }
 
 # [5] dtd
 download_dtd(){
-  mkdir -p dtd
-  cd dtd
   wget https://www.robots.ox.ac.uk/~vgg/data/dtd/download/dtd-r1.0.1.tar.gz
   tar xzvf dtd-r1.0.1.tar.gz
-  cd ..
 }
 
 # [6] quickdraw
@@ -77,6 +69,7 @@ download_vgg_flower(){
   wget http://www.robots.ox.ac.uk/~vgg/data/flowers/102/102flowers.tgz
   wget http://www.robots.ox.ac.uk/~vgg/data/flowers/102/imagelabels.mat
   tar xzvf 102flowers.tgz
+  cd ..
 }
 
 # [9] traffic_sign
@@ -93,6 +86,7 @@ download_mscoco(){
   wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
   unzip train2017.zip
   unzip annotations_trainval2017.zip
+  cd ..
 }
 
 # start download

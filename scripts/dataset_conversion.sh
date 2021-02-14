@@ -41,7 +41,7 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 do_aircraft(){
 python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
   --dataset=aircraft \
-  --omniglot_data_root=${root_dir}/fgvc-aircraft-2013b \
+  --aircraft_data_root=${root_dir}/fgvc-aircraft-2013b \
   --splits_root=${tf_root_dir}/splits \
   --records_root=${tf_root_dir}
 }
@@ -49,8 +49,8 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 # [4] cu_birds
 do_cu_birds(){
 python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
-  --dataset=aircraft \
-  --omniglot_data_root=${root_dir}/CUB_200_2011 \
+  --dataset=cu_birds \
+  --cu_birds_data_root=${root_dir}/CUB_200_2011 \
   --splits_root=${tf_root_dir}/splits \
   --records_root=${tf_root_dir}
 }
@@ -58,8 +58,8 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 # [5] dtd
 do_dtd(){
   python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
-  --dataset=aircraft \
-  --omniglot_data_root=${root_dir}/dtd \
+  --dataset=dtd \
+  --dtd_data_root=${root_dir}/dtd \
   --splits_root=${tf_root_dir}/splits \
   --records_root=${tf_root_dir}
 }
@@ -68,7 +68,7 @@ do_dtd(){
 do_quickdraw(){
 python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
   --dataset=quickdraw \
-  --quickdraw_data_root=$DATASRC/quickdraw \
+  --quickdraw_data_root=${root_dir}/quickdraw \
   --splits_root=${tf_root_dir}/splits \
   --records_root=${tf_root_dir}
 }
@@ -77,7 +77,7 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 do_fungi(){
 python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
   --dataset=fungi \
-  --fungi_data_root=$DATASRC/fungi \
+  --fungi_data_root=${root_dir}/fungi \
   --splits_root=${tf_root_dir}/splits \
   --records_root=${tf_root_dir}
 }
@@ -86,7 +86,7 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 do_vgg_flower(){
 python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
   --dataset=vgg_flower \
-  --vgg_flower_data_root=$DATASRC/vgg_flower \
+  --vgg_flower_data_root=${root_dir}/vgg_flower \
   --splits_root=${tf_root_dir}/splits \
   --records_root=${tf_root_dir}
 }
@@ -95,7 +95,7 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 do_traffic_sign(){
 python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
   --dataset=traffic_sign \
-  --traffic_sign_data_root=$DATASRC/GTSRB \
+  --traffic_sign_data_root=${root_dir}/GTSRB \
   --splits_root=${tf_root_dir}/splits \
   --records_root=${tf_root_dir}
 }
@@ -104,7 +104,7 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 do_mscoco(){
 python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
   --dataset=mscoco \
-  --mscoco_data_root=$DATASRC/mscoco \
+  --mscoco_data_root=${root_dir}/mscoco \
   --splits_root=${tf_root_dir}/splits \
   --records_root=${tf_root_dir}
 }
@@ -117,5 +117,5 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 # do_quickdraw
 # do_fungi
 # do_vgg_flower
-do_traffic_sign
-# do_mscoco
+# do_traffic_sign
+do_mscoco
