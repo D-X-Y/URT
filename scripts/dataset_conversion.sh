@@ -47,65 +47,75 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 }
 
 # [4] cu_birds
-download_cu_birds(){
-  mkdir -p CUB_200_2011
-  cd CUB_200_2011
-  wget http://www.vision.caltech.edu/visipedia-data/CUB-200-2011/CUB_200_2011.tgz
-  tar xzvf CUB_200_2011.tgz
-  cd ..
+do_cu_birds(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=aircraft \
+  --omniglot_data_root=${root_dir}/CUB_200_2011 \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [5] dtd
-download_dtd(){
-  mkdir -p dtd
-  cd dtd
-  wget https://www.robots.ox.ac.uk/~vgg/data/dtd/download/dtd-r1.0.1.tar.gz
-  tar xzvf dtd-r1.0.1.tar.gz
-  cd ..
+do_dtd(){
+  python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=aircraft \
+  --omniglot_data_root=${root_dir}/dtd \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [6] quickdraw
-download_quickdraw(){
-  mkdir -p quickdraw
-  gsutil -m cp gs://quickdraw_dataset/full/numpy_bitmap/*.npy ./quickdraw/
+do_quickdraw(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=quickdraw \
+  --quickdraw_data_root=$DATASRC/quickdraw \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [7] fungi
-download_fungi(){
-  mkdir -p fungi
-  cd fungi
-  wget https://labs.gbif.org/fgvcx/2018/fungi_train_val.tgz
-  wget https://labs.gbif.org/fgvcx/2018/train_val_annotations.tgz
-  tar xzvf fungi_train_val.tgz
-  tar xzvf train_val_annotations.tgz
-  cd ..
+do_fungi(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=fungi \
+  --fungi_data_root=$DATASRC/fungi \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [8] vgg_flower
-download_vgg_flower(){
-  mkdir -p vgg_flower
-  cd vgg_flower
-  wget http://www.robots.ox.ac.uk/~vgg/data/flowers/102/102flowers.tgz
-  wget http://www.robots.ox.ac.uk/~vgg/data/flowers/102/imagelabels.mat
-  tar xzvf 102flowers.tgz
+do_vgg_flower(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=vgg_flower \
+  --vgg_flower_data_root=$DATASRC/vgg_flower \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [9] traffic_sign
-download_traffic_sign(){
-  wget https://sid.erda.dk/public/archives/daaeac0d7ce1152aea9b61d9f1e19370/GTSRB_Final_Training_Images.zip
-  unzip GTSRB_Final_Training_Images.zip
+do_traffic_sign(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=traffic_sign \
+  --traffic_sign_data_root=$DATASRC/GTSRB \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [10] mscoco
-download_mscoco(){
-  mkdir -p mscoco
-  cd mscoco
-  wget http://images.cocodataset.org/zips/train2017.zip
-  wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip
-  unzip train2017.zip
-  unzip annotations_trainval2017.zip
+do_mscoco(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=mscoco \
+  --mscoco_data_root=$DATASRC/mscoco \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # Convert the dataset into records
-do_omniglot
-do_aircraft
+# do_omniglot
+# do_aircraft
+# do_cu_birds
+# do_dtd
+# do_quickdraw
+# do_fungi
+# do_vgg_flower
+do_traffic_sign
+# do_mscoco
