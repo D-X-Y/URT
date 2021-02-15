@@ -45,6 +45,24 @@ It will donwnload all the weights and place them in the `./weights` directory.
 Or pretrain the backbone by yourself on the training sets of Meta-Dataset and put the model weights under the directory of `./weights`. 
 
 
+## Repo Structureo
+```
+.
+├── lib [Library for configuration, dataset, mode and training strategy]
+|     ├── config_utils
+|     ├── data [The main codes to handle meta-dataset in PyTorch fashion]
+|     ├── dataset [The codes to support episodic fast training]
+|     └── models [The model and loss codes]
+|
+├── exps [The entry files for our algorithms]
+|
+└── scripts [Easy-to-use scripts]
+          ├── download.sh [A script to download the whole meta-dataset except for ImageNet]
+	  ├── dataset_conversion.sh [A script to convert all meta-dataset into tf-record]
+```
+Note that [`lib/data`](https://github.com/D-X-Y/URT/tree/master/lib/data) is modified from [CNAPs repo](https://github.com/cambridge-mlg/cnaps/blob/master/src).
+
+
 ## Train and evaluate URT
 
 ### Dumping features (for efficient training and evaluation)

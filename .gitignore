@@ -1,5 +1,5 @@
 core.*
-weights
+*weights*
 *.swo
 */*.swo
 */*.swp
@@ -21,3 +21,5 @@ fast-outputs*
 */.DS_Store
 *.nfs0000*
 */*.nfs0000*
+meta-dataset/build
+meta-dataset/meta_dataset.egg-info

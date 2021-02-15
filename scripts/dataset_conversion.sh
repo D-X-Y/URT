@@ -19,13 +19,13 @@ echo "meta dataset: ${meta_dataset_dir}"
 cd ${meta_dataset_dir}
 echo "LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}"
 
-# ImageNet
-ilsvrc_2012(){
-  # to be done
-  mkdir -p ILSVRC2012_img_train
-  cd ILSVRC2012_img_train
-  wget http://www.image-net.org/archive/wordnet.is_a.txt
-  wget http://www.image-net.org/archive/words.txt
+# [1] ImageNet
+do_ilsvrc_2012(){
+python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
+  --dataset=ilsvrc_2012 \
+  --ilsvrc_2012_data_root=${root_dir}/ILSVRC2012_img_train \
+  --splits_root=${tf_root_dir}/splits \
+  --records_root=${tf_root_dir}
 }
 
 # [2] omniglot
@@ -109,7 +109,9 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
   --records_root=${tf_root_dir}
 }
 
+
 # Convert the dataset into records
+do_ilsvrc_2012
 # do_omniglot
 # do_aircraft
 # do_cu_birds
@@ -118,4 +120,4 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 # do_fungi
 # do_vgg_flower
 # do_traffic_sign
-do_mscoco
+# do_mscoco

@@ -1,3 +1,4 @@
+# [ICLR 2021: A Universal Representation Transformer Layer for Few-Shot Image Classification]
 import os, sys, torch
 import numpy as np
 import torch.utils.data as data
@@ -29,4 +30,3 @@ class EpisodeMetadata(data.Dataset):
 
   def __len__(self):
     return len(self.files)
-    
