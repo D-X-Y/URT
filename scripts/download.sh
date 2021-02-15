@@ -7,7 +7,7 @@ root_dir="/projects/NeuralArch/meta-dataset"
 cd ${root_dir}
 
 # ImageNet
-ilsvrc_2012(){
+download_ilsvrc_2012(){
   # to be done
   mkdir -p ILSVRC2012_img_train
   cd ILSVRC2012_img_train
@@ -90,6 +90,7 @@ download_mscoco(){
 }
 
 # start download
+download_ilsvrc_2012
 download_omniglot
 download_aircraft
 download_cu_birds
@@ -99,4 +100,3 @@ download_fungi
 download_vgg_flower
 download_traffic_sign
 download_mscoco
-

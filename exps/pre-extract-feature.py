@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+# [ICLR 2021: A Universal Representation Transformer Layer for Few-Shot Image Classification]
+# This code is used to dump the features of meta-dataset data into pth files to boost the efficiency of URT training/evaluation.
+# [Usage]:
+#   python exps/pre-extract-feature.py 
 import os, sys, time, json, random, argparse
 import collections
 import torch
@@ -7,12 +11,11 @@ import numpy as np
 import tensorflow as tf
 from tqdm import tqdm
 from pathlib import Path
-lib_dir = (Path(__file__).parent / '..' / 'fast-exps' / 'lib').resolve()
+lib_dir = (Path(__file__).parent / '..' / 'lib').resolve()
 if str(lib_dir) not in sys.path: sys.path.insert(0, str(lib_dir))
 
 from data.meta_dataset_reader import MetaDatasetEpisodeReader, TRAIN_METADATASET_NAMES, ALL_METADATASET_NAMES
 from models.new_model_helpers import get_extractors, extract_features
-# from xmodels.new_model_helpers import get_extractors, extract_features
 from models.models_dict import DATASET_MODELS_DICT
 from utils import convert_secs2time, time_string, AverageMeter
 from paths import META_RECORDS_ROOT
@@ -76,7 +79,6 @@ def main(xargs):
   # set up logger
   log_dir = Path(xargs['save_dir']).resolve()
   log_dir.mkdir(parents=True, exist_ok=True)
-  #log_dir = "./NEWsave/{}_{}_allcache_{}_{}_{}_{}_{}_{}".format(args['train.optimizer'], args['train.scheduler'], args['prop.n_hop'], args['prop.temp'], args['prop.nonlinear'], args['prop.transform'], args['prop.layer_type'], args['prop.layer_type.att_space'])
 
   logger = Logger(str(log_dir), 888)
   logger.print('{:} --- args ---'.format(time_string()))
@@ -88,6 +90,8 @@ def main(xargs):
   extractor_domains = TRAIN_METADATASET_NAMES
   all_val_datasets  = TRAIN_METADATASET_NAMES
   all_test_datasets = ALL_METADATASET_NAMES
+  logger.print('[Meta-dataset training domains: {:}]'.format(TRAIN_METADATASET_NAMES))
+  logger.print('[Meta-dataset      all domains: {:}]'.format(ALL_METADATASET_NAMES))
   train_loader_lst  = [MetaDatasetEpisodeReader('train', [d], [d], all_test_datasets) for d in extractor_domains]
   val_loader        = MetaDatasetEpisodeReader('val' , extractor_domains, extractor_domains, all_test_datasets)
   test_loader       = MetaDatasetEpisodeReader('test', extractor_domains, extractor_domains, all_test_datasets)

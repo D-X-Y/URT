@@ -36,13 +36,17 @@ The following is required by meta-dataset:
 
 URT can be built on top of backbones pretrained in any ways. 
 
-The easiest way is to download SUR's pre-trained models and use them to obtain a universal set of features directly.
-If that is what you want, execute the following command in the root directory of this project:
+By default, this repo uses [SUR's pre-trained models](https://github.com/dvornikita/SUR) to extract features, 
+Please execute the following command to download them and put into proper locations:
 ```
-wget http://thoth.inrialpes.fr/research/SUR/all_weights.zip && unzip all_weights.zip && rm all_weights.zip
+wget http://thoth.inrialpes.fr/research/SUR/all_weights.zip
+unzip all_weights.zip
+rm all_weights.zip
+mv weights ~/.torch/sur-weights
 ```
-It will donwnload all the weights and place them in the `./weights` directory.
-Or pretrain the backbone by yourself on the training sets of Meta-Dataset and put the model weights under the directory of `./weights`. 
+It will donwnload all the weights and place them in the `~/.torch/sur-weights` directory.
+
+If you want to pretrain the backbone by yourself on the training sets of Meta-Dataset, you need to customize some codes.
 
 
 ## Repo Structureo
