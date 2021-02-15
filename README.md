@@ -1,4 +1,4 @@
-# [ICLR 2021] A Universal Representation Transformer Layer for Few-Shot Image Classification
+# [ICLR 2021] [A Universal Representation Transformer Layer for Few-Shot Image Classification](https://openreview.net/pdf?id=04cII6MumYV)
 
 Few-shot classification aims to recognize unseen classes when presented with only a small number of samples. We consider the problem of multi-domain few-shot image classification, where unseen classes and examples come from diverse data sources. This problem has seen growing interest and has inspired the development of benchmarks such as Meta-Dataset. A key challenge in this multi-domain setting is to effectively integrate the feature representations from the diverse set of training domains. Here, we propose a Universal Representation Transformer (URT) layer, that meta-learns to leverage universal features for few-shot classification by dynamically re-weighting and composing the most appropriate domain-specific representations. In experiments, we show that URT sets a new state-of-the-art result on Meta-Dataset. Specifically, it achieves top-performance on the highest number of data sources compared to competing methods. We analyze variants of URT and present a visualization of the attention score heatmaps that sheds light on how the model performs cross-domain generalization.
 
@@ -79,7 +79,8 @@ Or you can extract by your own via ```bash ./scripts/pre-extract-feature.sh resn
 Run command from the dir of this repo:
 ```
 bash ./fast-scripts/urt-avg-head.sh ${log_dir} ${num_head} ${penalty_coef} ${cache_dir}
-```, where the ${num_head}=2 and ${penalty_coef}=0.1 in our paper.
+```
+, where the ${num_head}=2 and ${penalty_coef}=0.1 in our paper.
 
 
 ## Citation
