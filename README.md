@@ -19,6 +19,7 @@ The following is required by meta-dataset:
 * pip install absl-py
 * pip install gin-config>=0.1.2
 * pip install tensorflow-gpu
+* pip install tabulate
 
 
 ## Data Preparation 
@@ -31,6 +32,9 @@ The following is required by meta-dataset:
 2. Additional Test Datasets:
 
     If you want to test on additional datasets, i.e.,  MNIST, CIFAR10, CIFAR100, follow the installation instructions in the [CNAPs repository](https://github.com/cambridge-mlg/cnaps) to get these datasets.
+
+    For simplicity, we also provided a script: `bash scripts/download-extra.sh` and `python exps/prepare_extra_datasets.py`.
+
 
 ## Getting the Feature Extractors
 
@@ -71,8 +75,13 @@ Note that [`lib/data`](https://github.com/D-X-Y/URT/tree/master/lib/data) is mod
 
 ### Dumping features (for efficient training and evaluation)
 
-We found that the bottleneck of training URT is extracting features from CNN. Since we freeze the CNN when training the URT, we found dumping the extracted feature episodes can significantly speed up the training procedure from days to ~2 hours. The easiest way is to download all the extracted features from [HERE](https://drive.google.com/drive/folders/1Z3gsa4TSSiH2wTZj1Jp5bD7UEKPOVzx5?usp=sharing) and put it in the ${cache_dir}.
-Or you can extract by your own via ```bash ./scripts/pre-extract-feature.sh resnet18 ${cache_dir}```
+We found that the bottleneck of training URT is extracting features from CNN. Since we freeze the CNN when training the URT, we found dumping the extracted feature episodes can significantly speed up the training procedure from days to ~2 hours.
+```
+bash ./scripts/pre-extract-feature.sh resnet18 ./outputs/extract-feature /projects/NeuralArch/meta-dataset-tf
+```
+`/projects/NeuralArch/meta-dataset-tf` is the root directory that meta dataset is converted.
+`resnet18` is the backbone name, and `./outputs/extract-feature` is the cache directory to savee the dumped features.
+
 
 ### Train and evaluate
 

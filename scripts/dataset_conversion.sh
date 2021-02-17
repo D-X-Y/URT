@@ -112,12 +112,12 @@ python -m meta_dataset.dataset_conversion.convert_datasets_to_records \
 
 # Convert the dataset into records
 do_ilsvrc_2012
-# do_omniglot
-# do_aircraft
-# do_cu_birds
-# do_dtd
-# do_quickdraw
-# do_fungi
-# do_vgg_flower
-# do_traffic_sign
-# do_mscoco
+do_omniglot
+do_aircraft
+do_cu_birds
+do_dtd
+do_quickdraw
+do_fungi
+do_vgg_flower
+do_traffic_sign
+do_mscoco

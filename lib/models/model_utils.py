@@ -7,8 +7,6 @@ from torch.optim.lr_scheduler import (MultiStepLR, ExponentialLR,
                                       CosineAnnealingWarmRestarts,
                                       CosineAnnealingLR)
 from utils import check_dir, device
-from paths import PROJECT_ROOT
-
 
 
 def cosine_sim(embeds, prots):

@@ -18,7 +18,6 @@ from data.meta_dataset_reader import MetaDatasetEpisodeReader, TRAIN_METADATASET
 from models.new_model_helpers import get_extractors, extract_features
 from models.models_dict import DATASET_MODELS_DICT
 from utils import convert_secs2time, time_string, AverageMeter
-from paths import META_RECORDS_ROOT
 
 from config_utils import Logger
 
@@ -27,9 +26,10 @@ def load_config():
 
   parser = argparse.ArgumentParser(description='Train prototypical networks')
   parser.add_argument('--save_dir', type=str, help="The saved path in dir.")
+  parser.add_argument('--meta_records_root', type=str, help='The converted tf record directory for meta dataset')
 
   # model args
-  parser.add_argument('--model.backbone', default='resnet18', help="Use ResNet18 for experiments (default: False)")
+  parser.add_argument('--model.backbone', type=str, default='resnet18', help="Use ResNet18 for experiments (default: False)")
   parser.add_argument('--model.classifier', type=str, default='cosine', choices=['none', 'linear', 'cosine'], help="Do classification using cosine similatity between activations and weights")
 
   # train args
@@ -92,9 +92,9 @@ def main(xargs):
   all_test_datasets = ALL_METADATASET_NAMES
   logger.print('[Meta-dataset training domains: {:}]'.format(TRAIN_METADATASET_NAMES))
   logger.print('[Meta-dataset      all domains: {:}]'.format(ALL_METADATASET_NAMES))
-  train_loader_lst  = [MetaDatasetEpisodeReader('train', [d], [d], all_test_datasets) for d in extractor_domains]
-  val_loader        = MetaDatasetEpisodeReader('val' , extractor_domains, extractor_domains, all_test_datasets)
-  test_loader       = MetaDatasetEpisodeReader('test', extractor_domains, extractor_domains, all_test_datasets)
+  train_loader_lst  = [MetaDatasetEpisodeReader('train', [d], [d], all_test_datasets, xargs['meta_records_root']) for d in extractor_domains]
+  val_loader        = MetaDatasetEpisodeReader('val' , extractor_domains, extractor_domains, all_test_datasets, xargs['meta_records_root'])
+  test_loader       = MetaDatasetEpisodeReader('test', extractor_domains, extractor_domains, all_test_datasets, xargs['meta_records_root'])
   class_name_dict   = collections.OrderedDict()
   for d in extractor_domains:
     with open("{:}/{:}/dataset_spec.json".format(META_RECORDS_ROOT, d)) as f:
@@ -109,6 +109,7 @@ def main(xargs):
   # stop at here
   extract_eval_dataset(xargs['model.backbone'], 'val' , extractors, all_val_datasets , val_loader , xargs['eval.max_iter'], logger, log_dir)
 
+  logger.print('Complete preparation for test/val sets')
   config = tf.compat.v1.ConfigProto()
   config.gpu_options.allow_growth = True
 

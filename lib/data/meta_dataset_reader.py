@@ -4,13 +4,13 @@ import sys
 import torch
 import numpy as np
 import tensorflow as tf
+from pathlib import Path
+this_dir = str(Path(__file__).parent.resolve())
 
 # from utils import device
-from paths import META_DATASET_ROOT, META_RECORDS_ROOT, PROJECT_ROOT
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Quiet the TensorFlow warnings
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)  # Quiet the TensorFlow warnings
 
-sys.path.append(os.path.abspath(META_DATASET_ROOT))
 from meta_dataset.data import dataset_spec as dataset_spec_lib
 from meta_dataset.data import learning_spec
 from meta_dataset.data import pipeline
@@ -27,15 +27,15 @@ SPLIT_NAME_TO_SPLIT = {'train': learning_spec.Split.TRAIN,
 
 
 class MetaDatasetReader(object):
-    def __init__(self, mode, train_set, validation_set, test_set):
+    def __init__(self, mode, train_set, validation_set, test_set, meta_records_root):
         assert (train_set is not None or validation_set is not None or test_set is not None)
 
-        self.data_path = META_RECORDS_ROOT
+        self.data_path = meta_records_root
         self.train_dataset_next_task = None
         self.validation_set_dict = {}
         self.test_set_dict = {}
         self.specs_dict = {}
-        gin.parse_config_file(f"{PROJECT_ROOT}/lib/data/meta_dataset_config.gin")
+        gin.parse_config_file(f"{this_dir}/meta_dataset_config.gin")
 
     def _get_dataset_spec(self, items):
         if isinstance(items, list):
@@ -103,23 +103,38 @@ class MetaDatasetEpisodeReader(MetaDatasetReader):
     """
     Class that wraps the Meta-Dataset episode readers.
     """
-    def __init__(self, mode, train_set=None, validation_set=None, test_set=None):
-        super(MetaDatasetEpisodeReader, self).__init__(mode, train_set, validation_set, test_set)
+    def __init__(self, mode, train_set=None, validation_set=None, test_set=None, meta_records_root=None):
+        super(MetaDatasetEpisodeReader, self).__init__(mode, train_set, validation_set, test_set, meta_records_root)
 
         if mode == 'train':
-            train_episode_desscription = config.EpisodeDescriptionConfig(None, None, None)
+            train_episode_desscription = config.EpisodeDescriptionConfig(
+                num_ways=None,
+                num_support=None,
+                num_query=None,
+                ignore_hierarchy_probability=0.0,
+                simclr_episode_fraction=0.0)
             self.train_dataset_next_task = self._init_multi_source_dataset(
                 train_set, SPLIT_NAME_TO_SPLIT['train'], train_episode_desscription)
 
         if mode == 'val':
-            test_episode_desscription = config.EpisodeDescriptionConfig(None, None, None)
+            test_episode_desscription = config.EpisodeDescriptionConfig(
+                num_ways=None,
+                num_support=None,
+                num_query=None,
+                ignore_hierarchy_probability=0.0,
+                simclr_episode_fraction=0.0)
             for item in validation_set:
                 next_task = self._init_single_source_dataset(
                     item, SPLIT_NAME_TO_SPLIT['val'], test_episode_desscription)
                 self.validation_set_dict[item] = next_task
 
         if mode == 'test':
-            test_episode_desscription = config.EpisodeDescriptionConfig(None, None, None)
+            test_episode_desscription = config.EpisodeDescriptionConfig(
+                num_ways=None,
+                num_support=None,
+                num_query=None,
+                ignore_hierarchy_probability=0.0,
+                simclr_episode_fraction=0.0)
             for item in test_set:
                 next_task = self._init_single_source_dataset(
                     item, SPLIT_NAME_TO_SPLIT['test'], test_episode_desscription)
@@ -143,7 +158,8 @@ class MetaDatasetEpisodeReader(MetaDatasetReader):
             use_bilevel_ontology_list=use_bilevel_ontology_list,
             split=split,
             episode_descr_config = episode_description,
-            image_size=84)
+            image_size=84,
+            shuffle_buffer_size=1000)
 
         iterator = multi_source_pipeline.make_one_shot_iterator()
         return iterator.get_next()
@@ -167,7 +183,8 @@ class MetaDatasetEpisodeReader(MetaDatasetReader):
             use_bilevel_ontology=use_bilevel_ontology,
             split=split,
             episode_descr_config=episode_description,
-            image_size=84)
+            image_size=84,
+            shuffle_buffer_size=1000)
 
         iterator = single_source_pipeline.make_one_shot_iterator()
         return iterator.get_next()
@@ -192,78 +209,3 @@ class MetaDatasetEpisodeReader(MetaDatasetReader):
     def get_test_task(self, session, item=None):
         item = item if item else list(self.test_set_dict.keys())[0]
         return self._get_task(self.test_set_dict[item], session)
-
-
-class MetaDatasetBatchReader(MetaDatasetReader):
-    """
-    Class that wraps the Meta-Dataset episode readers.
-    """
-    def __init__(self, mode, train_set, validation_set, test_set, batch_size):
-        super(MetaDatasetBatchReader, self).__init__(mode, train_set, validation_set, test_set)
-        self.batch_size = batch_size
-
-        if mode == 'train':
-            self.train_dataset_next_task = self._init_multi_source_dataset(
-                train_set, SPLIT_NAME_TO_SPLIT['train'])
-
-        elif mode == 'val':
-            for item in validation_set:
-                next_task = self.validation_dataset = self._init_single_source_dataset(
-                    item, SPLIT_NAME_TO_SPLIT['val'])
-                self.validation_set_dict[item] = next_task
-
-        elif mode == 'test':
-            for item in test_set:
-                next_task = self._init_single_source_dataset(
-                    item, SPLIT_NAME_TO_SPLIT['test'])
-                self.test_set_dict[item] = next_task
-        else:
-            raise ValueError('Invalid mode : {:}'.format(mode))
-
-        self.build_class_to_identity()
-
-    def _init_multi_source_dataset(self, items, split):
-        dataset_specs = self._get_dataset_spec(items)
-        self.specs_dict[split] = dataset_specs
-        multi_source_pipeline = pipeline.make_multisource_batch_pipeline(
-            dataset_spec_list=dataset_specs, batch_size=self.batch_size,
-            split=split, image_size=84, add_dataset_offset=True)
-
-        iterator = multi_source_pipeline.make_one_shot_iterator()
-        return iterator.get_next()
-
-    def _init_single_source_dataset(self, dataset_name, split):
-        dataset_specs = self._get_dataset_spec(dataset_name)
-        self.specs_dict[split] = dataset_specs
-        multi_source_pipeline = pipeline.make_one_source_batch_pipeline(
-            dataset_spec=dataset_specs, batch_size=self.batch_size,
-            split=split, image_size=84)
-
-        iterator = multi_source_pipeline.make_one_shot_iterator()
-        return iterator.get_next()
-
-    def _get_batch(self, next_task, session):
-        episode = session.run(next_task)[0]
-        images, labels = episode[0], episode[1]
-        local_classes, dataset_ids = [], []
-        for label in labels:
-            local_class, dataset_id = self.cls_to_identity[label]
-            local_classes.append(local_class)
-            dataset_ids.append(dataset_id)
-        task_dict = {
-            'images': images,
-            'labels': labels,
-            'local_classes': np.array(local_classes),
-            'dataset_ids': np.array(dataset_ids),
-            'dataset_name': self.dataset_id_to_dataset_name[dataset_ids[-1]]
-            }
-        return self._to_torch(task_dict)
-
-    def get_train_batch(self, session):
-        return self._get_batch(self.train_dataset_next_task, session)
-
-    def get_validation_batch(self, item, session):
-        return self._get_batch(self.validation_set_dict[item], session)
-
-    def get_test_batch(self, item, session):
-        return self._get_batch(self.test_set_dict[item], session)
