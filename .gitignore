@@ -23,3 +23,6 @@ fast-outputs*
 */*.nfs0000*
 meta-dataset/build
 meta-dataset/meta_dataset.egg-info
+.DS_Store
+*/.DS_Store
+*/*/.DS_Store
