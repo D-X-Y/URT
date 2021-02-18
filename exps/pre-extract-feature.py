@@ -97,7 +97,7 @@ def main(xargs):
   test_loader       = MetaDatasetEpisodeReader('test', extractor_domains, extractor_domains, all_test_datasets, xargs['meta_records_root'])
   class_name_dict   = collections.OrderedDict()
   for d in extractor_domains:
-    with open("{:}/{:}/dataset_spec.json".format(META_RECORDS_ROOT, d)) as f:
+    with open("{:}/{:}/dataset_spec.json".format(xargs['meta_records_root'], d)) as f:
       data = json.load(f) 
       class_name_dict[d] = data['class_names']
 
